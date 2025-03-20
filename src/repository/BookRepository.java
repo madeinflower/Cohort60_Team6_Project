@@ -1,5 +1,8 @@
 package repository;
 
+import model.Book;
+import utils.MyList;
+
 public interface BookRepository {
 
     Book addBook(String title, String author);

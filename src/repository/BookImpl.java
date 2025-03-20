@@ -1,5 +1,8 @@
 package repository;
 
+import model.Book;
+import utils.MyList;
+
 public class BookImpl implements BookRepository {
     private final MyList<Book> books = new MyList<>();
 

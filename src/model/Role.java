@@ -1,6 +1,8 @@
 package model;
 
-public class Role {
-    // some code here
+public enum Role {
+    ADMIN,
+    USER,
+    READER;
 
 }
