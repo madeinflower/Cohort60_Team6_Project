@@ -1,10 +1,12 @@
 package repository;
 
 import model.Book;
+import utils.ArrayMyList;
 import utils.MyList;
 
 public class BookImpl implements BookRepository {
-    private final MyList<Book> books = new MyList<>();
+    private final MyList<Book> books = new MyList<>()
+
 
     // добавляет книги в список
     @Override
