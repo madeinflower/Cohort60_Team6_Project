@@ -1,4 +1,7 @@
 package model;
 
-public class Role {
+public enum Role {
+    ADMIN,
+    USER,
+    READER;
 }
