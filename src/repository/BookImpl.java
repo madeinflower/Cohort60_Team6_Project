@@ -1,26 +1,46 @@
 package repository;
 
+import model.Book;
+import utils.MyArrayList;
+import utils.MyList;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class BookImpl implements BookRepository {
-    private final MyList<Book> books = new MyList<>();
+    private final MyList<Book> books = new MyArrayList<>( );
+
+    private final AtomicInteger currenId = new AtomicInteger(1);
 
     // добавляет книги в список
     @Override
-    public Book addBook(String title, String author) {
-        Book book = new Book(title, author);
+    public Book addBook(int regNr, String title, String author) {
+        Book book = new Book(regNr, title, author);
         books.add(book);
         return book;
+    }
+
+    @Override
+    public void deleteBook(int bookId) {
+        books.remove(bookId);
     }
 
     // возвращает все книги
     @Override
     public MyList<Book> getAllBooks() {
-        return new MyList<>(books);
+        return books;
+    }
+
+    @Override
+    public void addStartBooks() {
+        books.addAll(
+                new Book(currenId.getAndIncrement(), "1","2")
+        );
     }
 
     // поиск по названию или автору
     @Override
     public MyList<Book> searchByTitleOrAuthor(String query) {
-        MyList<Book> result = new MyList<>();
+        MyList<Book> result = new MyArrayList<>();
         for (Book book : books) {
             if (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                     book.getAuthor().toLowerCase().contains(query.toLowerCase())) {
@@ -33,7 +53,7 @@ public class BookImpl implements BookRepository {
     // возвращает книги, которые не взяты
     @Override
     public MyList<Book> getAvailableBooks() {
-        MyList<Book> availableBooks = new MyList<>();
+        MyList<Book> availableBooks = new MyArrayList<>();
         for (Book book : books) {
             if (!book.isTaken()) {
                 availableBooks.add(book);
@@ -45,7 +65,7 @@ public class BookImpl implements BookRepository {
     // возвращает книги, которые уже взяты.
     @Override
     public MyList<Book> getTakenBooks() {
-        MyList<Book> takenBooks = new MyList<>();
+        MyList<Book> takenBooks = new MyArrayList<>();
         for (Book book : books) {
             if (book.isTaken()) {
                 takenBooks.add(book);

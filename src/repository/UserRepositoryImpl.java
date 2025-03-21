@@ -1,10 +1,9 @@
 package repository;
 
+import model.Role;
 import model.User;
 import utils.MyArrayList;
 import utils.MyList;
-
-import javax.management.relation.Role;
 
 public class UserRepositoryImpl implements UserRepository {
 
@@ -15,9 +14,14 @@ public class UserRepositoryImpl implements UserRepository {
         addUsers();
     }
 
+    @Override
+    public MyList<User> getAllUsers() {
+        return users;
+    }
+
     private void addUsers() {
         User admin = new User("admin@library.net", "qazxsw@12");
-        admin.setRole(Role.ADMIN);
+        admin.setRole(model.Role.ADMIN);
 
         User user = new User("test@test.com", "qwerty!Q34");
         user.setRole(Role.USER);
@@ -32,15 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
         return user;
     }
 
-    @Override
-    public User addReadUser(User user, String book) {
-        if (user.takeBook()) {
-            user = user.setRole(Role.READER);
-            return user;
-        }
 
-        return null;
-    }
 
     @Override
     public boolean isEmailExist(String email) {
