@@ -14,4 +14,8 @@ public interface BookRepository {
 
     void takeBook(Book book);
     void returnBook(Book book);
+    void deleteById(int id);
+    void saveBook(Book book);
+
+
 }

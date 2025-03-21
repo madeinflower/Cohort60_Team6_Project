@@ -4,6 +4,7 @@ public class User {
     private String email;
     private String password;
     private Role role;
+    private final int MAX_BOOKS = 10;
 
     public User(String email, String password) {
         this.email = email;

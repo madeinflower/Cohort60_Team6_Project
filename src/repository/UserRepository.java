@@ -1,12 +1,13 @@
 package repository;
 
+import model.Book;
 import model.User;
+import utils.MyList;
 
 public interface UserRepository {
 
+    MyList<User> getAllUsers();
     User addUser(String email, String password);
-
-    User addReadUser(User user, String book);
 
     boolean isEmailExist(String email);
 
