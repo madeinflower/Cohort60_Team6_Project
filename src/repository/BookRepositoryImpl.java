@@ -1,17 +1,30 @@
 package repository;
 
 import model.Book;
-import utils.ArrayMyList;
+import utils.MyArrayList;
 import utils.MyList;
 
-public class BookImpl implements BookRepository {
-    private final MyList<Book> books = new MyList<>()
+import java.util.concurrent.atomic.AtomicInteger;
 
 
-    // добавляет книги в список
+public class BookRepositoryImpl implements BookRepository { // Класс-репозиторий для хранения книг
+
+    private final MyList<Book> books; // Список книг в хранилище
+    private final AtomicInteger currentId = new AtomicInteger(1); // Генератор уникальных ID
+
+    public BookRepositoryImpl() { // Конструктор
+        this.books = new MyArrayList<>();
+        addStartBooks(); // Добавление стартовых книг
+    }
+
+    private void addStartBooks() { // Метод для добавления стартового набора книг
+        books.addAll(
+                new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"));
+    }
+
     @Override
-    public Book addBook(String title, String author) {
-        Book book = new Book(title, author);
+    public Book addBook(String title, String author) { // Добавление новой книги
+        Book book = new Book(currentId.getAndIncrement(), title, author);
         books.add(book);
         return book;
     }
@@ -19,13 +32,13 @@ public class BookImpl implements BookRepository {
     // возвращает все книги
     @Override
     public MyList<Book> getAllBooks() {
-        return new MyList<>(books);
+        return new MyArrayList<>();
     }
 
     // поиск по названию или автору
     @Override
     public MyList<Book> searchByTitleOrAuthor(String query) {
-        MyList<Book> result = new MyList<>();
+        MyList<Book> result = new MyArrayList<>();
         for (Book book : books) {
             if (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                     book.getAuthor().toLowerCase().contains(query.toLowerCase())) {
@@ -38,7 +51,7 @@ public class BookImpl implements BookRepository {
     // возвращает книги, которые не взяты
     @Override
     public MyList<Book> getAvailableBooks() {
-        MyList<Book> availableBooks = new MyList<>();
+        MyList<Book> availableBooks = new MyArrayList<>();
         for (Book book : books) {
             if (!book.isTaken()) {
                 availableBooks.add(book);
@@ -50,7 +63,7 @@ public class BookImpl implements BookRepository {
     // возвращает книги, которые уже взяты.
     @Override
     public MyList<Book> getTakenBooks() {
-        MyList<Book> takenBooks = new MyList<>();
+        MyList<Book> takenBooks = new MyArrayList<>();
         for (Book book : books) {
             if (book.isTaken()) {
                 takenBooks.add(book);
@@ -74,5 +87,13 @@ public class BookImpl implements BookRepository {
             book.setTaken(false);
         }
     }
-}
 
+
+    @Override
+    public void saveBook(Book book) { // Сохранение книги (можно расширить логику)
+    }
+
+    @Override
+    public void deleteById(int id) { // Удаление книги по ID (можно реализовать)
+    }
+}
