@@ -19,5 +19,6 @@ public class BookApp {
         MainService service = new MainServiceImpl(bookRepository,userRepository);
         Menu menu = new Menu(service);
         menu.start();
+        
     }
 }

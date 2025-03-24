@@ -7,8 +7,6 @@ import repository.UserRepository;
 import utils.UserValidation;
 import utils.MyList;
 
-import static view.RainbowConsole.prnt;
-
 /*** Author: Roman Romashko Date: 18.03.2025 ***/
 
 public class MainServiceImpl implements MainService {
@@ -16,7 +14,7 @@ public class MainServiceImpl implements MainService {
     private final BookRepository bookRepository; // Хранилище книг
     private final UserRepository userRepository; // Хранилище пользователей
 
-    private User activeUser = null; // По умолчанию текущего пользователя нет
+    private User activeUser; // Текущий авторизованный пользователь
 
     public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
@@ -26,30 +24,22 @@ public class MainServiceImpl implements MainService {
     @Override
     public User registerUser(String email, String password) { // Регистрация пользователя
 
-        /*
-        1. Валидация еmail / password (если не пройдено возвращаем null)
-        2. Проверить уникальность email (что пользователя с таким email еще нет
-        3. Создаю нового пользователя и сохраняю его в хранилище данных
-        4. Возвращаем созданного пользователя в слой view
-        */
-
         if (!UserValidation.isEmailValid(email)) { // Проверка email
-            prnt("\n     Емейл не прошел проверку!",4);
+            System.out.println("Емейл не прошел проверку!");
             return null;
         }
 
         if (!UserValidation.isPasswordValid(password)) { // Проверка пароля
-            prnt("\n     Пароль не прошел проверку!",4);
+            System.out.println("Пароль не прошел проверку!");
             return null;
         }
 
         if (userRepository.isEmailExist(email)) { // Проверка уникальности email
-            prnt("     Пользователь уже есть, так как email уже существует!",4);
+            System.out.println("Пользователь уже есть, так как email уже существует!");
             return null;
         }
 
-        User user = userRepository.addUser(email,password); // Добавление пользователя
-        return user;
+        return userRepository.addUser(email, password); // Добавление пользователя
     }
 
     @Override
@@ -67,23 +57,20 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public void logout() {// Выход пользователя из аккаунта
-        activeUser = null; // Очищаем активного пользователя
+    public void logout() {
+        activeUser = null; // Выход пользователя
+    }
+
+
+
+    @Override
+    public void addBook(String title, String author) {
+        bookRepository.addBook(title, author);
     }
 
     @Override
-    public boolean takeBook(int bookId) {
-        return false; // Заглушка
-    }
-
-    @Override
-    public Book addBook(String title, String author) {
-        return null; // Заглушка
-    }
-
-    @Override
-    public MyList<Book> getAllBooks() {
-        return bookRepository.getAllBooks(); // Заглушка
+    public void getAllBooks() {
+        bookRepository.getAllBooks();
     }
 
     @Override
@@ -93,21 +80,47 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<Book> getAvailableBooks() {
-        return null; // Заглушка
+        return bookRepository.getAvailableBooks();
+    }
+
+    @Override
+    public MyList<Book> getTakenBooks() {
+       return bookRepository.getTakenBooks();
     }
 
     @Override
     public void deleteBook(int bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public void takeBook(int id) {
+        bookRepository.takeBook(id);
+
+    }
+
+    @Override
+    public void returnBook(int id) {
+        bookRepository.returnBook(id);
+    }
+
+    @Override
+    public void editBook(int id, String newTitle, String newAuthor) {
+        bookRepository.editBook(id, newTitle, newAuthor);
+    }
+
+    @Override
+    public void logoutUser() {
         // Заглушка
     }
 
     public User getActiveUser() {
-        return activeUser;  // Получение текущего пользователя
+        return activeUser; // Получение текущего пользователя
     }
 
     @Override
     public MyList<User> getAllUsers() {
-      return userRepository.getAllUsers();
+        return null;
     }
 
     @Override

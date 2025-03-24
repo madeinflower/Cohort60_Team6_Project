@@ -16,11 +16,9 @@ public interface MainService {
 
     void logout(); // Выход пользователя из системы
 
-    boolean takeBook(int bookId); // Взять книгу по её ID
+    void addBook(String title, String author); // Добавить новую книгу
 
-    Book addBook(String title, String author); // Добавить новую книгу
-
-    MyList<Book> getAllBooks(); // Получить список всех книг
+    void getAllBooks(); // Получить список всех книг
 
     MyList<Book> getBooksByTitle(String title); // Найти книги по названию
 
@@ -28,7 +26,17 @@ public interface MainService {
 
     void deleteBook(int bookId); // Удалить книгу по её ID
 
+    MyList<Book> getTakenBooks();
+
+    void takeBook(int id); // Взять книгу
+
+    void returnBook(int id); // Отдать книгу
+
+    void editBook(int id, String newTitle, String newAuthor); // Редактировать книгу
+
     //void logoutUser(); // Разлогинивание пользователя
+
+    void logoutUser();
 
     User getActiveUser(); // Получить текущего авторизованного пользователя
 
