@@ -33,4 +33,10 @@ public interface MainService {
     User getActiveUser(); // Получить текущего авторизованного пользователя
 
     MyList<User> getAllUsers(); // Вывод всех пользователей через слой сервис
+
+    User getUserByEmail(String email);
+
+    boolean deleteUser(String email);
+
+    boolean updatePassword(String email, String newPassword); // обновление данных пользователя
 }

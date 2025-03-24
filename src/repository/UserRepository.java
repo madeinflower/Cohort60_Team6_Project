@@ -14,7 +14,7 @@ public interface UserRepository {
     User getUserByEmail(String email);
 
     boolean updatePassword(String email, String newPassword);
-
+    boolean deleteUser(String email);
 
 
 

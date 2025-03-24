@@ -1,28 +1,32 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /*** Author: Roman Romashko Date: 24.03.2025 ***/
 
 class UserRepositoryImplTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getAllUsers() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void addUser() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void isEmailExist() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getUserByEmail() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updatePassword() {
+    }
+
+    @Test
+    void deleteUser() {
     }
 }

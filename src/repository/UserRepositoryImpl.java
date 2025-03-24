@@ -22,7 +22,19 @@ public class UserRepositoryImpl implements UserRepository {
 
         User user = new User("222", "222");
         user.setRole(Role.USER);
-        users.addAll(admin, user);
+
+        // Добавляем еще пользователей
+        User user1 = new User("user1@library.com", "pass1");
+        user1.setRole(Role.USER);
+
+        User user2 = new User("user2@library.com", "pass2");
+        user2.setRole(Role.USER);
+
+        User user3 = new User("user3@library.com", "pass3");
+        user3.setRole(Role.USER);
+
+        // Добавляем всех пользователей в список
+        users.addAll(admin, user, user1, user2, user3);
 
     }
 
@@ -63,11 +75,24 @@ public class UserRepositoryImpl implements UserRepository {
         for (User user : users) {
             if (user.getEmail().equals(email)) {
                 user.setPassword(newPassword);
-                System.out.println("Пароль успешно изменён!");
+                //System.out.println("Пароль успешно изменён!");
                 return true;
             }
         }
-        System.out.println("Пользователь не найден!");
+        //System.out.println("Пользователь не найден!");
         return false;
     }
+
+    @Override
+    public boolean deleteUser(String email) { // удаление пользователя из базы
+
+        // Находим пользователя по email в текущем списке
+        User userToDelete = getUserByEmail(email);
+        if (userToDelete == null) {
+            return false; // пользователь не найден
+        }
+        // Удаляем найденного пользователя из списка
+        return users.remove(userToDelete);
+    }
+
 }
