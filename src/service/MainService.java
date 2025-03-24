@@ -34,9 +34,15 @@ public interface MainService {
 
     MyList<User> getAllUsers(); // Вывод всех пользователей через слой сервис
 
+    MyList<Book> searchByTitle(String title);
+
+    MyList<Book> searchByAuthor(String author);
+
+    MyList<Book> searchByTitleOrAuthor(String titleSearch);
     User getUserByEmail(String email);
 
     boolean deleteUser(String email);
 
     boolean updatePassword(String email, String newPassword); // обновление данных пользователя
+
 }

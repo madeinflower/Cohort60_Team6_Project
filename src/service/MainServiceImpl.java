@@ -111,6 +111,20 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
+    public MyList<Book> searchByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByAuthor(String author) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByTitleOrAuthor(String titleSearch) {
+        return null;
+    }
+
     public User getUserByEmail(String email) { // получение пользователя по емейл
         if (email == null || email.trim().isEmpty()) { // проверка на пустую строку и нул
             return null;

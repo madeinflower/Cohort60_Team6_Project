@@ -4,6 +4,7 @@ import model.Book;
 import model.Role;
 import model.User;
 import service.MainService;
+import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.Scanner;
@@ -103,15 +104,76 @@ public class Menu {
         } else if (choice == 2) {
             service.getAvailableBooks();
         } else if (choice == 3) {
-            prnt("Сортировка по автору пока не реализована.", 3);
+            // Поиск книг по автору
+            prnt("\n   Введите имя автора: ", 1);
+            String author = scanner.nextLine();
+            MyList<Book> booksByAuthor = service.searchByAuthor(author);
+
+            // Проверяем, что booksByAuthor не равен null
+            if (booksByAuthor == null || booksByAuthor.isEmpty()) {
+                prnt("Книги по автору '" + author + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByAuthor) {
+                    System.out.println("   " + book);
+                }
+            }
             waitRead();
+
+
         } else if (choice == 4) {
-            prnt("Сортировка по названию пока не реализована.", 3);
+            // Поиск книг по названию
+            prnt("\n   Введите название книги: ", 1);
+            String title = scanner.nextLine();
+            MyList<Book> booksByTitle = service.searchByTitle(title);
+
+            // Проверяем, что booksByTitle не равен null
+            if (booksByTitle == null || booksByTitle.isEmpty()) {
+                prnt("Книги с названием '" + title + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByTitle) {
+                    System.out.println("   " + book);
+                }
+            }
             waitRead();
+
         } else if (choice == 5) {
-            // service.getBooksByTitle();
+            // Поиск по названию (поиск без уточнения авторства)
+            prnt("\n   Введите часть названия книги для поиска: ", 1);
+            String titleSearch = scanner.nextLine();
+
+            // Получаем список книг, убедившись, что он не null
+            MyList<Book> booksByTitleSearch = service.searchByTitleOrAuthor(titleSearch);
+
+            // Если метод вернул null, инициализируем пустым списком
+            if (booksByTitleSearch == null) {
+                booksByTitleSearch = new MyArrayList<>();
+            }
+
+            if (booksByTitleSearch.isEmpty()) {
+                prnt("Книги с названием или автором, содержащими '" + titleSearch + "', не найдены.", 3);
+            } else {
+                for (Book book : booksByTitleSearch) {
+                    System.out.println("   " + book);
+                }
+            }
+            waitRead();
+
         } else if (choice == 6) {
-            // service.getBooksByAuthor();
+            // Поиск по автору (поиск без уточнения названия)
+            prnt("\n   Введите имя автора для поиска: ", 1);
+            String authorSearch = scanner.nextLine();
+            MyList<Book> booksByAuthorSearch = service.searchByTitleOrAuthor(authorSearch);
+
+            // Проверяем, что booksByAuthorSearch не равен null
+            if (booksByAuthorSearch == null || booksByAuthorSearch.isEmpty()) {
+                prnt("Книги с автором '" + authorSearch + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByAuthorSearch) {
+                    System.out.println("   " + book);
+                }
+            }
+            waitRead();
+
         } else if (choice == 7 && (role == Role.USER || role == Role.ADMIN)) {
             // service.rentBook();
         } else if (choice == 8 && (role == Role.USER || role == Role.ADMIN)) {
