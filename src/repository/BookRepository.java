@@ -9,7 +9,6 @@ public interface BookRepository {
 
     void getAllBooks();
 
-    MyList<Book> getAllBooks();
     MyList<Book> searchByTitle(String query);
     MyList<Book> searchByAuthor(String query);
 

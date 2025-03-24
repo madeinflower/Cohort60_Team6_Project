@@ -1,6 +1,5 @@
 package repository;
 
-import model.User;
 import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
@@ -30,7 +29,7 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
                 new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
                 new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
                 new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
+                new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"),
 
                 new Book(currentId.getAndIncrement(), "Чистый код. Создание, анализ и рефакторинг", "Роберт Мартин"),
                 new Book(currentId.getAndIncrement(), "Совершенный программист. Путь к мастерству", "Эндрю Хант, Дэвид Томас"),
