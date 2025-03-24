@@ -28,7 +28,11 @@ public interface MainService {
 
     void deleteBook(int bookId); // Удалить книгу по её ID
 
-    void logoutUser(); // Разлогинивание пользователя
+    //void logoutUser(); // Разлогинивание пользователя
+
+    void logoutUser();
 
     User getActiveUser(); // Получить текущего авторизованного пользователя
+
+    MyList<User> getAllUsers(); // Вывод всех пользователей через слой сервис
 }

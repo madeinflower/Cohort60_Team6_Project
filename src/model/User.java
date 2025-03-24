@@ -9,7 +9,7 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
+        this.role = Role.USER; // Дефолтная роль - Гость
     }
 
     public String getEmail() {
@@ -44,7 +44,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "email='" + email + '\'' +
-                ", role=" + role +
+                ", role=" + role +0
                 '}';
     }
 }
