@@ -3,6 +3,8 @@ package model;
 import utils.MyArrayList;
 import utils.MyList;
 
+import java.util.Objects;
+
 public class User {
     private String email;
     private String password;
@@ -56,5 +58,17 @@ public class User {
 
     public MyList<Book> getUserBooks(){
         return userBooks;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (!(o instanceof User user)) return false;
+
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(email);
     }
 }

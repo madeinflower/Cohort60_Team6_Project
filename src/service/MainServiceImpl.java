@@ -122,4 +122,48 @@ public class MainServiceImpl implements MainService {
     public MyList<User> getAllUsers() {
         return null;
     }
+
+    @Override
+    public MyList<Book> searchByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByAuthor(String author) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByTitleOrAuthor(String titleSearch) {
+        return null;
+    }
+
+    public User getUserByEmail(String email) { // получение пользователя по емейл
+        if (email == null || email.trim().isEmpty()) { // проверка на пустую строку и нул
+            return null;
+        }
+        return userRepository.getUserByEmail(email);
+    }
+
+    @Override
+    public boolean deleteUser(String email) {
+        User user = userRepository.getUserByEmail(email);
+        if (user == null) {
+            return false;
+        }
+        if (!user.getUserBooks().isEmpty()) {
+            return false;
+        }
+        return userRepository.deleteUser(email);
+    }
+
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        // Проверяем, что вообще за пароль
+        if (!UserValidation.isPasswordValid(newPassword)) {
+            return false; // пароль не прошел валидацию
+        }
+        return userRepository.updatePassword(email, newPassword); // обновление пароля
+    }
+
 }

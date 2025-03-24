@@ -4,6 +4,7 @@ import model.Book;
 import model.Role;
 import model.User;
 import service.MainService;
+import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.Scanner;
@@ -96,15 +97,76 @@ public class Menu {
         } else if (choice == 2) {
             service.getAvailableBooks();
         } else if (choice == 3) {
-            prnt("Сортировка по автору пока не реализована.", 3);
+            // Поиск книг по автору
+            prnt("\n   Введите имя автора: ", 1);
+            String author = scanner.nextLine();
+            MyList<Book> booksByAuthor = service.searchByAuthor(author);
+
+            // Проверяем, что booksByAuthor не равен null
+            if (booksByAuthor == null || booksByAuthor.isEmpty()) {
+                prnt("Книги по автору '" + author + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByAuthor) {
+                    System.out.println("   " + book);
+                }
+            }
             waitRead();
+
+
         } else if (choice == 4) {
-            prnt("Сортировка по названию пока не реализована.", 3);
+            // Поиск книг по названию
+            prnt("\n   Введите название книги: ", 1);
+            String title = scanner.nextLine();
+            MyList<Book> booksByTitle = service.searchByTitle(title);
+
+            // Проверяем, что booksByTitle не равен null
+            if (booksByTitle == null || booksByTitle.isEmpty()) {
+                prnt("Книги с названием '" + title + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByTitle) {
+                    System.out.println("   " + book);
+                }
+            }
             waitRead();
+
         } else if (choice == 5) {
-            // service.getBooksByTitle();
+            // Поиск по названию (поиск без уточнения авторства)
+            prnt("\n   Введите часть названия книги для поиска: ", 1);
+            String titleSearch = scanner.nextLine();
+
+            // Получаем список книг, убедившись, что он не null
+            MyList<Book> booksByTitleSearch = service.searchByTitleOrAuthor(titleSearch);
+
+            // Если метод вернул null, инициализируем пустым списком
+            if (booksByTitleSearch == null) {
+                booksByTitleSearch = new MyArrayList<>();
+            }
+
+            if (booksByTitleSearch.isEmpty()) {
+                prnt("Книги с названием или автором, содержащими '" + titleSearch + "', не найдены.", 3);
+            } else {
+                for (Book book : booksByTitleSearch) {
+                    System.out.println("   " + book);
+                }
+            }
+            waitRead();
+
         } else if (choice == 6) {
-            // service.getBooksByAuthor();
+            // Поиск по автору (поиск без уточнения названия)
+            prnt("\n   Введите имя автора для поиска: ", 1);
+            String authorSearch = scanner.nextLine();
+            MyList<Book> booksByAuthorSearch = service.searchByTitleOrAuthor(authorSearch);
+
+            // Проверяем, что booksByAuthorSearch не равен null
+            if (booksByAuthorSearch == null || booksByAuthorSearch.isEmpty()) {
+                prnt("Книги с автором '" + authorSearch + "' не найдены.", 3);
+            } else {
+                for (Book book : booksByAuthorSearch) {
+                    System.out.println("   " + book);
+                }
+            }
+            waitRead();
+
         } else if (choice == 7 && (role == Role.USER || role == Role.ADMIN)) {
             // service.rentBook();
         } else if (choice == 8 && (role == Role.USER || role == Role.ADMIN)) {
@@ -158,7 +220,7 @@ public class Menu {
         } else if (choice == 14 && role == Role.ADMIN) {
             showUserManagementMenu();
         } else if (choice == 15) {
-            registerUser();
+            addUser("Регистрация");
         } else if (choice == 16) {
             loginUser();
         } else if (choice == 17 && (role == Role.USER || role == Role.ADMIN)) {
@@ -178,7 +240,7 @@ public class Menu {
         while (true) {
             prnt("=== Управление пользователями ===", 1);
             prnt("1. Просмотреть список пользователей", 2);
-            prnt("2. Найти пользователя по имени", 2);
+            prnt("2. Найти пользователя и его книги", 2);
             prnt("3. Добавить пользователя", 2);
             prnt("4. Изменить данные пользователя", 2);
             prnt("5. Удалить пользователя", 2);
@@ -199,17 +261,51 @@ public class Menu {
                 MyList<User> users = service.getAllUsers();
 
                 if (users.isEmpty()) {
-                    prnt("Пользователей пока нет.", 3);
+                    prnt("\n Список пользователей пуст.", 3);
                 } else {
+
+                    // Вывод информации о пользователе
+                    prnt("\n = Список пользователей ===\n", 1);
+                    int i=0;
                     for (User user : users) {
-                        System.out.println("   " + user);
+                        i++;
+                        prnt(""+i+": "
+                                + "Email: " + user.getEmail() + ", "
+                                + "Роль: " + user.getRole() + ", "
+                                + "Книги: " + user.getUserBooks().toString(), 3);
                     }
                 }
                 waitRead();
 
             } else if (choice == 0) {
                 break;
-            } else {
+            } else if (choice == 2) {
+
+                // Вывод информации о пользователе
+                prnt("\n   = Поиск пользователя ===", 1);
+                System.out.print("     Введите email: ");
+
+                String email = scanner.nextLine();
+                User userByEmail = service.getUserByEmail(email);
+
+                if (userByEmail == null) {
+                    prnt("\n   Пользователь с email " + email + " не найден.", 3);
+                } else {
+                    prnt("  Найден пользователь: "
+                            + "Email: " + userByEmail.getEmail() + ", "
+                            + "Роль: " + userByEmail.getRole() + ", "
+                            + "Книги: " + userByEmail.getUserBooks().toString(), 3);
+                }
+                waitRead();
+            } else if (choice == 3){
+                addUser("Добавление");
+            } else if (choice == 4){
+                editUser();
+            } else if (choice == 5) {
+                deleteUser();
+                waitRead();
+            }
+            else {
                 prnt("\n  Некорректный ввод. Попробуйте снова.", 4);
                 waitRead();
             }
@@ -217,7 +313,7 @@ public class Menu {
     }
 
     private void waitRead() {
-        System.out.println("\n   Для продолжения нажмите Enter...");
+        System.out.println("\n    Для продолжения нажмите Enter...");
         scanner.nextLine(); // Ждем нажатия Enter
     }
 
@@ -232,15 +328,15 @@ public class Menu {
         boolean loggedIn = service.loginUser(email, password);
 
         if (loggedIn) {
-            prnt("\n   [+] Добро пожаловать, "+ email + "!", 2);
-            waitRead();
+            prnt("\n   [+] Добро пожаловать, "+ email + "!\n", 2);
+            //waitRead();
         } else {
             prnt("\n  [!] Ошибка авторизации! Неверный email или пароль.", 4);
             waitRead();
         }
     }
 
-    private void registerUser() {
+    private void addUser(String action) {
 
         // Регистрация
         /*
@@ -250,23 +346,63 @@ public class Menu {
          4. Сообщить результат пользователю
          */
 
-        prnt("\n   = Регистрация пользователя ===", 1);
+        prnt("\n   = " + action + " пользователя ===", 1);
         System.out.print("     Введите email: ");
         String email = scanner.nextLine();
-
         System.out.print("     Введите пароль: ");
         String password = scanner.nextLine();
 
         User user = service.registerUser(email, password);
 
         if (user == null) {
-            prnt("  [!] Регистрация провалена", 4);
+            prnt("  [!] Операция отменена", 4);
         } else {
-            prnt("\n   [+] Вы успешно зарегистрировались в системе!", 2);
+            prnt("\n    [+] Операция прошла успешно", 2);
         }
 
         waitRead();
+    }
+    private void deleteUser() {
+        prnt("\n = Удаление пользователя ===", 1);
+        System.out.print("   Введите его email: ");
+        String email = scanner.nextLine();
+
+        if (!service.deleteUser(email)) {
+            // Проверяем, существует ли пользователь
+            if (service.getUserByEmail(email) == null) {
+                prnt("\n  Пользователь не найден.", 4);
+            } else {
+                prnt("\n  Невозможно удалить пользователя, так как у него есть книги.", 4);
+            }
+        } else {
+            prnt("\n   Удаление пользователя прошло успешно.", 2);
+        }
 
     }
 
+    private void editUser() {
+        prnt("\n = Изменение данных пользователя ===", 1);
+        System.out.print("   Введите email пользователя: ");
+        String email = scanner.nextLine();
+
+        // Проверяем, существует ли такой пользователь
+        User user = service.getUserByEmail(email);
+        if (user == null) {
+            prnt(" Пользователь не найден.", 4);
+            waitRead();
+            return;
+        }
+
+        System.out.print("   Введите новый пароль: ");
+        String newPassword = scanner.nextLine();
+
+        boolean result = service.updatePassword(email, newPassword);
+        if (result) {
+            prnt("  Изменение данных пользователя прошло успешно.", 2);
+        } else {
+            prnt("  Не пройдена валидация! Изменение данных отменено.", 4);
+        }
+
+        waitRead();
+    }
 }
