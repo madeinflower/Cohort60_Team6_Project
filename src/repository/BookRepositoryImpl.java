@@ -32,7 +32,7 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     // возвращает все книги
     @Override
     public MyList<Book> getAllBooks() {
-        return new MyArrayList<>();
+        return books;
     }
 
     // поиск по названию или автору

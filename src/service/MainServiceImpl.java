@@ -7,6 +7,8 @@ import repository.UserRepository;
 import utils.UserValidation;
 import utils.MyList;
 
+import static view.RainbowConsole.prnt;
+
 /*** Author: Roman Romashko Date: 18.03.2025 ***/
 
 public class MainServiceImpl implements MainService {
@@ -14,7 +16,7 @@ public class MainServiceImpl implements MainService {
     private final BookRepository bookRepository; // Хранилище книг
     private final UserRepository userRepository; // Хранилище пользователей
 
-    private User activeUser; // Текущий авторизованный пользователь
+    private User activeUser = null; // По умолчанию текущего пользователя нет
 
     public MainServiceImpl(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
@@ -24,22 +26,30 @@ public class MainServiceImpl implements MainService {
     @Override
     public User registerUser(String email, String password) { // Регистрация пользователя
 
+        /*
+        1. Валидация еmail / password (если не пройдено возвращаем null)
+        2. Проверить уникальность email (что пользователя с таким email еще нет
+        3. Создаю нового пользователя и сохраняю его в хранилище данных
+        4. Возвращаем созданного пользователя в слой view
+        */
+
         if (!UserValidation.isEmailValid(email)) { // Проверка email
-            System.out.println("Емейл не прошел проверку!");
+            prnt("\n     Емейл не прошел проверку!",4);
             return null;
         }
 
         if (!UserValidation.isPasswordValid(password)) { // Проверка пароля
-            System.out.println("Пароль не прошел проверку!");
+            prnt("\n     Пароль не прошел проверку!",4);
             return null;
         }
 
         if (userRepository.isEmailExist(email)) { // Проверка уникальности email
-            System.out.println("Пользователь уже есть, так как email уже существует!");
+            prnt("     Пользователь уже есть, так как email уже существует!",4);
             return null;
         }
 
-        return userRepository.addUser(email, password); // Добавление пользователя
+        User user = userRepository.addUser(email,password); // Добавление пользователя
+        return user;
     }
 
     @Override
@@ -57,8 +67,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public void logout() {
-        activeUser = null; // Выход пользователя
+    public void logout() {// Выход пользователя из аккаунта
+        activeUser = null; // Очищаем активного пользователя
     }
 
     @Override
@@ -73,7 +83,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<Book> getAllBooks() {
-        return null; // Заглушка
+        return bookRepository.getAllBooks(); // Заглушка
     }
 
     @Override
@@ -91,12 +101,12 @@ public class MainServiceImpl implements MainService {
         // Заглушка
     }
 
-    @Override
-    public void logoutUser() {
-        // Заглушка
+    public User getActiveUser() {
+        return activeUser;  // Получение текущего пользователя
     }
 
-    public User getActiveUser() {
-        return activeUser; // Получение текущего пользователя
+    @Override
+    public MyList<User> getAllUsers() {
+      return userRepository.getAllUsers();
     }
 }

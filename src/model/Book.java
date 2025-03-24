@@ -11,7 +11,7 @@ public class Book {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.isTaken = isTaken;
+
     }
 
     public int getId() {
