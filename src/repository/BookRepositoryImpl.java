@@ -20,14 +20,16 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     private void addStartBooks() { // Метод для добавления стартового набора книг
         books.addAll(
 
-        new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
-
+                new Book(currentId.getAndIncrement(), "Чистый код. Создание, анализ и рефакторинг", "Роберт Мартин"),
+                new Book(currentId.getAndIncrement(), "Совершенный программист. Путь к мастерству", "Эндрю Хант, Дэвид Томас"),
+                new Book(currentId.getAndIncrement(), "Паттерны проектирования. Решения для повторяющихся проблем", "Эрих Гамма, Ричард Хелм, Ральф Джонсон, Джон Влиссайдес"),
+                new Book(currentId.getAndIncrement(), "Вы не знаете JS", "Кайл Симпсон"),
+                new Book(currentId.getAndIncrement(), "Эффективный JavaScript", "Дэвид Херман"),
+                new Book(currentId.getAndIncrement(), "Fullstack React", "Энтони Аккомадзо, Натан Мюррей, Ар Лернер, Клэй Оллопп"),
+                new Book(currentId.getAndIncrement(), "Node.js. Шаблоны проектирования", "Марио Каччаро"),
+                new Book(currentId.getAndIncrement(), "Изучаем React", "Алекс Бэнкс, Ив Порцелло"),
+                new Book(currentId.getAndIncrement(), "Python. Краткий курс", "Эрик Мэттес"),
+                new Book(currentId.getAndIncrement(), "Head First. Паттерны проектирования", "Эрик Фриман, Элизабет Робсон"));
 
     }
 

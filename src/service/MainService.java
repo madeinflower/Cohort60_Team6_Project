@@ -39,4 +39,10 @@ public interface MainService {
     MyList<Book> searchByAuthor(String author);
 
     MyList<Book> searchByTitleOrAuthor(String titleSearch);
+    User getUserByEmail(String email);
+
+    boolean deleteUser(String email);
+
+    boolean updatePassword(String email, String newPassword); // обновление данных пользователя
+
 }
