@@ -109,4 +109,19 @@ public class MainServiceImpl implements MainService {
     public MyList<User> getAllUsers() {
       return userRepository.getAllUsers();
     }
+
+    @Override
+    public MyList<Book> searchByTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByAuthor(String author) {
+        return null;
+    }
+
+    @Override
+    public MyList<Book> searchByTitleOrAuthor(String titleSearch) {
+        return null;
+    }
 }

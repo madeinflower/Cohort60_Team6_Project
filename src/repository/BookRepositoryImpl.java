@@ -44,6 +44,28 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
         return books;
     }
 
+    // поиск по названию
+    public MyList<Book> searchByTitle(String title) {
+        MyList<Book> result = new MyArrayList<>();
+        for (Book book : books) {
+            if (book.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
+    // поиск по автору
+    public MyList<Book> searchByAuthor(String author) {
+        MyList<Book> result = new MyArrayList<>();
+        for (Book book : books) {
+            if (book.getAuthor().toLowerCase().contains(author.toLowerCase())) {
+                result.add(book);
+            }
+        }
+        return result;
+    }
+
     // поиск по названию или автору
     @Override
     public MyList<Book> searchByTitleOrAuthor(String query) {
