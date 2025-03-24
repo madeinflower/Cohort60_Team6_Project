@@ -19,7 +19,16 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
 
     private void addStartBooks() { // Метод для добавления стартового набора книг
         books.addAll(
-                new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"));
+
+        new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
+
+
     }
 
     @Override
