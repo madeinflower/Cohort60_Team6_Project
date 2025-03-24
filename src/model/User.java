@@ -1,15 +1,20 @@
 package model;
 
+import utils.MyArrayList;
+import utils.MyList;
+
 public class User {
     private String email;
     private String password;
     private Role role;
     private final int MAX_BOOKS = 10;
+    private final MyList<Book> userBooks;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
         this.role = Role.USER; // Дефолтная роль - Гость
+        userBooks = new MyArrayList<>();
     }
 
     public String getEmail() {
@@ -46,5 +51,9 @@ public class User {
                 "email='" + email + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    public MyList<Book> getUserBooks(){
+        return userBooks;
     }
 }
