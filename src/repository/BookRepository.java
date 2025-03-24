@@ -12,10 +12,10 @@ public interface BookRepository {
     MyList<Book> getAvailableBooks();
     MyList<Book> getTakenBooks();
 
-    void takeBook(Book book);
-    void returnBook(Book book);
+    void takeBook(int id);
+    void returnBook(int id);
     void deleteById(int id);
-    void saveBook(Book book);
+    void editBook(int id, String newTitle, String newAuthor);
 
 
 }

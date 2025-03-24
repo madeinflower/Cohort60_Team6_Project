@@ -19,7 +19,16 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
 
     private void addStartBooks() { // Метод для добавления стартового набора книг
         books.addAll(
-                new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"));
+
+        new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
+        new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
+
+
     }
 
     @Override
@@ -74,26 +83,35 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
 
     // помечает книгу как взятую, если она доступна
     @Override
-    public void takeBook(Book book) {
-        if (books.contains(book) && !book.isTaken()) {
-            book.setTaken(true);
+    public void takeBook(int id) {
+        for (Book book : books) {
+            if (currentId.equals(id)) book.setTaken(true);
         }
     }
 
     // помечает книгу как возвращенную, если она была взята
     @Override
-    public void returnBook(Book book) {
-        if (books.contains(book) && book.isTaken()) {
-            book.setTaken(false);
+    public void returnBook(int id) {
+        for (Book book : books) {
+            if (currentId.equals(id)) book.setTaken(false);
         }
     }
 
 
     @Override
-    public void saveBook(Book book) { // Сохранение книги (можно расширить логику)
+    public void editBook(int id, String newTitle, String newAuthor) { // Сохранение книги (можно расширить логику)
+        for (Book book : books) {
+            if (currentId.equals(id)) {
+                book.setTitle(newTitle);
+                book.setAuthor(newAuthor);
+            }
+        }
     }
 
     @Override
     public void deleteById(int id) { // Удаление книги по ID (можно реализовать)
+        for (Book book : books) {
+            if (currentId.equals(id)) books.remove(id);
+        }
     }
 }

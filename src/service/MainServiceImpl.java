@@ -61,10 +61,7 @@ public class MainServiceImpl implements MainService {
         activeUser = null; // Выход пользователя
     }
 
-    @Override
-    public boolean takeBook(int bookId) {
-        return false; // Заглушка
-    }
+
 
     @Override
     public Book addBook(String title, String author) {
@@ -83,12 +80,28 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<Book> getAvailableBooks() {
-        return null; // Заглушка
+        return bookRepository.getAvailableBooks();
     }
 
     @Override
     public void deleteBook(int bookId) {
-        // Заглушка
+        bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public void takeBook(int id) {
+        bookRepository.takeBook(id);
+
+    }
+
+    @Override
+    public void returnBook(int id) {
+        bookRepository.returnBook(id);
+    }
+
+    @Override
+    public void editBook(int id, String newTitle, String newAuthor) {
+        bookRepository.editBook(id, newTitle, newAuthor);
     }
 
     @Override
