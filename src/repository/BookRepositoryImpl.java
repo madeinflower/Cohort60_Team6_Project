@@ -1,10 +1,13 @@
 package repository;
 
+import model.User;
 import model.Book;
 import utils.MyArrayList;
 import utils.MyList;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static view.RainbowConsole.prnt;
 
 
 public class BookRepositoryImpl implements BookRepository { // Класс-репозиторий для хранения книг
@@ -20,28 +23,34 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     private void addStartBooks() { // Метод для добавления стартового набора книг
         books.addAll(
 
-        new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
-        new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
+                new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
+                new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"));
 
 
     }
 
     @Override
-    public Book addBook(String title, String author) { // Добавление новой книги
+    public void addBook(String title, String author) { // Добавление новой книги
         Book book = new Book(currentId.getAndIncrement(), title, author);
         books.add(book);
-        return book;
     }
 
     // возвращает все книги
     @Override
-    public MyList<Book> getAllBooks() {
-        return books;
+    public void getAllBooks() {
+        for (Book book : books) {
+            if (books.isEmpty()) {
+                prnt("Книг пока нет.", 3);
+            } else {
+                System.out.println("    " + book);
+            }
+        }
+
     }
 
     // поиск по названию или автору
@@ -74,7 +83,10 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     public MyList<Book> getTakenBooks() {
         MyList<Book> takenBooks = new MyArrayList<>();
         for (Book book : books) {
-            if (book.isTaken()) {
+            if (takenBooks.isEmpty()) {
+                prnt("Книг пока нет.", 3);
+                break;
+            }else if (book.isTaken()) {
                 takenBooks.add(book);
             }
         }
@@ -85,7 +97,7 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     @Override
     public void takeBook(int id) {
         for (Book book : books) {
-            if (currentId.equals(id)) book.setTaken(true);
+            if (book.getId() == id) book.setTaken(true);
         }
     }
 
@@ -93,7 +105,7 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     @Override
     public void returnBook(int id) {
         for (Book book : books) {
-            if (currentId.equals(id)) book.setTaken(false);
+            if (book.getId() == id) book.setTaken(false);
         }
     }
 
@@ -101,9 +113,10 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     @Override
     public void editBook(int id, String newTitle, String newAuthor) { // Сохранение книги (можно расширить логику)
         for (Book book : books) {
-            if (currentId.equals(id)) {
+            if (book.getId() == id) {
                 book.setTitle(newTitle);
                 book.setAuthor(newAuthor);
+
             }
         }
     }
@@ -111,7 +124,7 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     @Override
     public void deleteById(int id) { // Удаление книги по ID (можно реализовать)
         for (Book book : books) {
-            if (currentId.equals(id)) books.remove(id);
+            if (book.getId() == id) books.remove(book);
         }
     }
 }

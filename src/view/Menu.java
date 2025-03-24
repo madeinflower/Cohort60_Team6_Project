@@ -89,15 +89,8 @@ public class Menu {
             3. Если книги есть - выводим список книг
             4. Ставим задержку - даем просмотреть список
             */
-            MyList<Book> books = service.getAllBooks();
             System.out.println();
-            if (books.isEmpty()) {
-                prnt("Книг пока нет.", 3);
-            } else {
-                for (Book book : books) {
-                    System.out.println("   " + book);
-                }
-            }
+            service.getAllBooks();
             waitRead();
 
         } else if (choice == 2) {
@@ -119,13 +112,49 @@ public class Menu {
         } else if (choice == 9 && (role == Role.USER || role == Role.ADMIN)) {
             // service.showUserBooks();
         } else if (choice == 10 && role == Role.ADMIN) {
-            // service.addBook();
+            System.out.print("     Введите название книги: ");
+            String title = scanner.nextLine();
+
+            System.out.print("     Введите автора книги: ");
+            String author = scanner.nextLine();
+
+            service.addBook(title, author);
+            waitRead();
         } else if (choice == 11 && role == Role.ADMIN) {
-            // service.editBook();
+            prnt(" Выберите из списка книгу для редакции", 1);
+            System.out.println();
+            service.getAllBooks();
+            System.out.println();
+
+            System.out.print("    Введите номер книги: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+
+            System.out.print("    Введите новое название книги: ");
+            String newTitle = scanner.nextLine();
+
+            System.out.print("    Введите нового автора книги: ");
+            String newAuthor = scanner.nextLine();
+
+            service.editBook(id, newTitle, newAuthor);
+
         } else if (choice == 12 && role == Role.ADMIN) {
-            // service.removeBook();
+            prnt(" Выберите из списка книгу для удаления", 1);
+            System.out.println();
+            service.getAllBooks();
+            System.out.println();
+
+            System.out.print("   Введите номер книги: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+            service.deleteBook(id);
+            waitRead();
+
         } else if (choice == 13 && role == Role.ADMIN) {
-            // service.showBookHolders();
+            service.getTakenBooks();
+            waitRead();
+
         } else if (choice == 14 && role == Role.ADMIN) {
             showUserManagementMenu();
         } else if (choice == 15) {

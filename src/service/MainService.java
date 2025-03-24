@@ -16,15 +16,17 @@ public interface MainService {
 
     void logout(); // Выход пользователя из системы
 
-    Book addBook(String title, String author); // Добавить новую книгу
+    void addBook(String title, String author); // Добавить новую книгу
 
-    MyList<Book> getAllBooks(); // Получить список всех книг
+    void getAllBooks(); // Получить список всех книг
 
     MyList<Book> getBooksByTitle(String title); // Найти книги по названию
 
     MyList<Book> getAvailableBooks(); // Получить список доступных книг
 
     void deleteBook(int bookId); // Удалить книгу по её ID
+
+    MyList<Book> getTakenBooks();
 
     void takeBook(int id); // Взять книгу
 

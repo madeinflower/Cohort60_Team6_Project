@@ -64,13 +64,13 @@ public class MainServiceImpl implements MainService {
 
 
     @Override
-    public Book addBook(String title, String author) {
-        return null; // Заглушка
+    public void addBook(String title, String author) {
+        bookRepository.addBook(title, author);
     }
 
     @Override
-    public MyList<Book> getAllBooks() {
-        return null; // Заглушка
+    public void getAllBooks() {
+        bookRepository.getAllBooks();
     }
 
     @Override
@@ -81,6 +81,11 @@ public class MainServiceImpl implements MainService {
     @Override
     public MyList<Book> getAvailableBooks() {
         return bookRepository.getAvailableBooks();
+    }
+
+    @Override
+    public MyList<Book> getTakenBooks() {
+       return bookRepository.getTakenBooks();
     }
 
     @Override

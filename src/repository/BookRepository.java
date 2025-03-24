@@ -5,9 +5,9 @@ import utils.MyList;
 
 public interface BookRepository {
 
-    Book addBook(String title, String author);
+    void addBook(String title, String author);
 
-    MyList<Book> getAllBooks();
+    void getAllBooks();
     MyList<Book> searchByTitleOrAuthor(String query);
     MyList<Book> getAvailableBooks();
     MyList<Book> getTakenBooks();
