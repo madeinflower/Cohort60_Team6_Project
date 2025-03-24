@@ -16,10 +16,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void addUsers() {
-        User admin = new User("admin@library.net", "qazxsw@12");
+        User admin = new User("111", "111");
+        //User admin = new User("admin@library.net", "qazxsw@12");
         admin.setRole(Role.ADMIN);
 
-        User user = new User("test@test.com", "qwerty!Q34");
+        User user = new User("222", "222");
         user.setRole(Role.USER);
         users.addAll(admin, user);
 
@@ -27,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public MyList<User> getAllUsers() {
-        return null;
+        return users;  // возвращаем список всех пользователей
     }
 
     @Override
