@@ -16,7 +16,7 @@ public interface MainService {
 
     void logout(); // Выход пользователя из системы
 
-    boolean takeBook(int bookId); // Взять книгу по её ID
+    boolean takeBook(int bookId);
 
     Book addBook(String title, String author); // Добавить новую книгу
 

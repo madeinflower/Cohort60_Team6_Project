@@ -73,11 +73,14 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<Book> getAllBooks() {
-        return null; // Заглушка
+//        return null; // Заглушка
+        return bookRepository.getAllBooks();
     }
 
     @Override
     public MyList<Book> getBooksByTitle(String title) {
+
+
         return null; // Заглушка
     }
 
