@@ -52,15 +52,8 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
 
     // возвращает все книги
     @Override
-    public void getAllBooks() {
-        for (Book book : books) {
-            if (books.isEmpty()) {
-                prnt("Книг пока нет.", 3);
-            } else {
-                System.out.println("    " + book);
-            }
-        }
-
+    public MyList<Book> getAllBooks() {
+        return books;
     }
 
     // поиск по названию
