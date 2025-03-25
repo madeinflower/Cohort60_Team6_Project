@@ -44,8 +44,8 @@ public class Menu {
         prnt("== 📚 Библиотека \"Знания Века\" ===", 1);
         prnt("1. Все книги", 0);
         prnt("2. Доступные книги", 0);
-        prnt("3. Книги по автору", 0);
-        prnt("4. Книги по названию", 0);
+        prnt("3. Книги, отсортированные по автору", 0);
+        prnt("4. Книги, отсортированные по названию", 0);
         prnt("5. Поиск по названию", 0);
         prnt("6. Поиск по автору", 0);
 
@@ -53,7 +53,7 @@ public class Menu {
             prnt("-----------------------------", 1);
             prnt("7. Взять книгу", 0);
             prnt("8. Вернуть книгу", 0);
-            prnt("9. " + ACCENT + "❤" + RESET + " Мои книги", 0);
+            prnt("9. " + ACCENT + "❤" + RESET + " Мои взятые книги", 0);
         }
 
         if (role == Role.ADMIN) {
@@ -90,48 +90,70 @@ public class Menu {
             3. Если книги есть - выводим список книг
             4. Ставим задержку - даем просмотреть список
             */
-            System.out.println();
-            service.getAllBooks();
-            waitRead();
-
-        } else if (choice == 2) {
-            service.getAvailableBooks();
-        } else if (choice == 3) {
-            // Поиск книг по автору
-            prnt("\n   Введите имя автора: ", 1);
-            String author = scanner.nextLine();
-            MyList<Book> booksByAuthor = service.searchByAuthor(author);
-
-            // Проверяем, что booksByAuthor не равен null
-            if (booksByAuthor == null || booksByAuthor.isEmpty()) {
-                prnt("Книги по автору '" + author + "' не найдены.", 3);
+            prnt("\n   = Список всех книг библиотеки ===", 1);
+            //System.out.println();
+            MyList<Book> books = service.getAllBooks();
+            if (books == null || books.isEmpty()) {
+                prnt("В нашей библиотеке книг пока нет.", 3);
             } else {
-                for (Book book : booksByAuthor) {
-                    System.out.println("   " + book);
+                for (Book book : books) {
+                    prnt(""
+                            + WARNING + book.getId() + ". "+ RESET
+                            + "" + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
                 }
             }
             waitRead();
 
+        } else if (choice == 2) { // Выводим список доступных книг
+            prnt("\n   = Список доступных книг ===", 1);
+            //System.out.println();
+            MyList<Book> availableBooks = service.getAvailableBooks();
+            if (availableBooks == null || availableBooks.isEmpty()) {
+                prnt("Доступных книг пока нет.", 3);
+            } else {
+                for (Book book : availableBooks) {
+                    prnt(""
+                            + WARNING + book.getId() + ". "+ RESET
+                            + "" + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
+            waitRead();
+        } else if (choice == 3) {
+            prnt("\n   = Список книг, отсортированных по автору ===", 1);
+            //System.out.println();
+            MyList<Book> sortedBooks = service.getSortedBooks("author");
+            if (sortedBooks == null || sortedBooks.isEmpty()) {
+                prnt("Книг пока нет.", 3);
+            } else {
+                for (Book book : sortedBooks) {
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
+            waitRead();
 
         } else if (choice == 4) {
-            // Поиск книг по названию
-            prnt("\n   Введите название книги: ", 1);
-            String title = scanner.nextLine();
-            MyList<Book> booksByTitle = service.searchByTitle(title);
-
-            // Проверяем, что booksByTitle не равен null
-            if (booksByTitle == null || booksByTitle.isEmpty()) {
-                prnt("Книги с названием '" + title + "' не найдены.", 3);
+            prnt("\n   = Список книг, отсортированных по названию ===", 1);
+            //System.out.println();
+            MyList<Book> sortedBooks = service.getSortedBooks("title");
+            if (sortedBooks == null || sortedBooks.isEmpty()) {
+                prnt("Книг пока нет.", 3);
             } else {
-                for (Book book : booksByTitle) {
-                    System.out.println("   " + book);
+                for (Book book : sortedBooks) {
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
                 }
             }
             waitRead();
 
         } else if (choice == 5) {
+            prnt("   = Поиск книг по названию ===", 1);
             // Поиск по названию (поиск без уточнения авторства)
-            prnt("\n   Введите часть названия книги для поиска: ", 1);
+            System.out.print("    Введите название книги или ее часть: ");
             String titleSearch = scanner.nextLine();
 
             // Получаем список книг, убедившись, что он не null
@@ -143,78 +165,256 @@ public class Menu {
             }
 
             if (booksByTitleSearch.isEmpty()) {
-                prnt("Книги с названием или автором, содержащими '" + titleSearch + "', не найдены.", 3);
+                prnt("   Книги с названием, содержащими '" + titleSearch + "', не найдены.", 3);
             } else {
+                System.out.println();
                 for (Book book : booksByTitleSearch) {
-                    System.out.println("   " + book);
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
                 }
             }
             waitRead();
 
         } else if (choice == 6) {
+            prnt("\n   = Поиск книг по автору ===", 1);
             // Поиск по автору (поиск без уточнения названия)
-            prnt("\n   Введите имя автора для поиска: ", 1);
+            System.out.print("    Введите автора книги: ");
             String authorSearch = scanner.nextLine();
             MyList<Book> booksByAuthorSearch = service.searchByTitleOrAuthor(authorSearch);
 
             // Проверяем, что booksByAuthorSearch не равен null
             if (booksByAuthorSearch == null || booksByAuthorSearch.isEmpty()) {
-                prnt("Книги с автором '" + authorSearch + "' не найдены.", 3);
+                prnt("   Книги с автором '" + authorSearch + "' не найдены.", 3);
             } else {
+                System.out.println();
                 for (Book book : booksByAuthorSearch) {
-                    System.out.println("   " + book);
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
                 }
             }
             waitRead();
 
         } else if (choice == 7 && (role == Role.USER || role == Role.ADMIN)) {
-            // service.rentBook();
-        } else if (choice == 8 && (role == Role.USER || role == Role.ADMIN)) {
-            // service.returnBook();
-        } else if (choice == 9 && (role == Role.USER || role == Role.ADMIN)) {
-            // service.showUserBooks();
-        } else if (choice == 10 && role == Role.ADMIN) {
-            System.out.print("     Введите название книги: ");
-            String title = scanner.nextLine();
 
-            System.out.print("     Введите автора книги: ");
-            String author = scanner.nextLine();
+            prnt("\n   = Взять книгу ===\n", 1);
 
-            service.addBook(title, author);
-            waitRead();
-        } else if (choice == 11 && role == Role.ADMIN) {
-            prnt(" Выберите из списка книгу для редакции", 1);
-            System.out.println();
-            service.getAllBooks();
-            System.out.println();
+            MyList<Book> availableBooks = service.getAvailableBooks();
+            if (availableBooks == null || availableBooks.isEmpty()) {
+                prnt("Доступных книг пока нет.", 3);
+            } else {
+                for (Book book : availableBooks) {
+                    prnt(""
+                            + WARNING + book.getId() + ". "+ RESET
+                            + "" + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
 
-            System.out.print("    Введите номер книги: ");
+            System.out.print("\n"+PRIMARY+"   Введите id книги: "+RESET);
             int id = scanner.nextInt();
             scanner.nextLine();
 
+            // Получаем книгу по id из общего списка
+            MyList<Book> allBooks = service.getAllBooks();
+            Book selectedBook = null;
+            for (Book book : allBooks) {
+                if (book.getId() == id) {
+                    selectedBook = book;
+                    break;
+                }
+            }
 
-            System.out.print("    Введите новое название книги: ");
-            String newTitle = scanner.nextLine();
+            if (selectedBook == null) {
+                prnt("\n   Книга с таким id не найдена.", 4);
+            } else if (selectedBook.isTaken()) {
+                prnt("\n   Простите, но эта книга уже взята.", 4);
+            } else {
+                // Вызываем сервис для взятия книги
+                service.takeBook(id);
+                // Добавляем книгу в список книг активного пользователя
+                service.getActiveUser().getUserBooks().add(selectedBook);
+                prnt("\n   Книга \""+ selectedBook.getTitle()+"\" Вами успешно взята!", 2);
+            }
+            waitRead();
+
+        } else if (choice == 8 && (role == Role.USER || role == Role.ADMIN)) {
+
+            prnt("\n   = Список книг для возврата ===", 1);
+            //System.out.println();
+            User activeUser = service.getActiveUser();
+            MyList<Book> myBooks = activeUser.getUserBooks();
+            if (myBooks == null || myBooks.isEmpty()) {
+                prnt(" У вас нет взятых книг.", 3);
+            } else {
+                for (Book book : myBooks) {
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+
+
+                System.out.print("\n    Введите id книги для возврата: ");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+
+                Book selectedBook = null;
+                MyList<Book> userBooks = activeUser.getUserBooks();
+                for (Book book : userBooks) {
+                    if (book.getId() == id) { // Ищем книгу в списке книг пользователя
+                        selectedBook = book;
+                        break;
+                    }
+                }
+
+                if (selectedBook == null) {
+                    prnt("\n     У вас нет книги с таким id.", 4);
+                } else {
+                    // Вызываем сервис для возврата книги
+                    service.returnBook(id);
+                    // Удаляем книгу из списка книг активного пользователя
+                    // (Предполагается, что MyList имеет метод remove(T value))
+                    userBooks.remove(selectedBook);
+                    prnt("\n    Книга успешно возвращена!", 2);
+                }
+
+            }
+            waitRead();
+
+        } else if (choice == 9 && (role == Role.USER || role == Role.ADMIN)) {
+
+            prnt("\n   = Мои взятые книги ===", 1);
+            //System.out.println();
+            User activeUser = service.getActiveUser();
+            MyList<Book> myBooks = activeUser.getUserBooks();
+            if (myBooks == null || myBooks.isEmpty()) {
+                prnt(" У вас нет взятых книг.", 3);
+            } else {
+                for (Book book : myBooks) {
+                    prnt(WARNING + book.getId() + ". " + RESET
+                            + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
+            waitRead();
+
+        } else if (choice == 10 && role == Role.ADMIN) {
+
+            prnt("\n  = Добавление книги в библиотеку ===", 1);
+            //System.out.println();
+
+            System.out.print("    Введите название книги: ");
+            String title = scanner.nextLine().trim();
+
+            System.out.print("    Введите автора книги: ");
+            String author = scanner.nextLine().trim();
+
+            if (title.isEmpty() || author.isEmpty()) {
+                prnt("\n Ошибка: название и автор не могут быть пустыми.", 4);
+            } else {
+                service.addBook(title, author);
+                prnt("\n    Книга успешно добавлена!", 2);
+            }
+            waitRead();
+
+        } else if (choice == 11 && role == Role.ADMIN) {
+            prnt("\n   = Редактирование книги ===", 1);
+
+            // Вывод списка книг для выбора
+            MyList<Book> availableBooks = service.getAvailableBooks();
+            if (availableBooks == null || availableBooks.isEmpty()) {
+                prnt("Доступных книг пока нет.", 3);
+            } else {
+                for (Book book : availableBooks) {
+                    prnt(""
+                            + WARNING + book.getId() + ". "+ RESET
+                            + "" + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
+
+            System.out.print("\n"+PRIMARY+"   Введите id книги: "+RESET);
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("\n   Введите новое название книги: ");
+            String newTitle = scanner.nextLine().trim();
 
             System.out.print("    Введите нового автора книги: ");
-            String newAuthor = scanner.nextLine();
+            String newAuthor = scanner.nextLine().trim();
 
-            service.editBook(id, newTitle, newAuthor);
+            if (newTitle.isEmpty() || newAuthor.isEmpty()) {
+                prnt("\n    Ошибка: название и автор не могут быть пустыми.", 4);
+            } else {
+                service.editBook(id, newTitle, newAuthor);
+                prnt("\n   Книга успешно отредактирована!", 2);
+            }
+            waitRead();
 
         } else if (choice == 12 && role == Role.ADMIN) {
-            prnt(" Выберите из списка книгу для удаления", 1);
-            System.out.println();
-            service.getAllBooks();
-            System.out.println();
+            prnt("\n   = Удаление книги из библиотеки ===", 1);
+            // Вывод списка книг для выбора
+            MyList<Book> availableBooks = service.getAvailableBooks();
+            if (availableBooks == null || availableBooks.isEmpty()) {
+                prnt("Доступных книг пока нет.", 3);
+            } else {
+                for (Book book : availableBooks) {
+                    prnt(""
+                            + WARNING + book.getId() + ". "+ RESET
+                            + "" + book.getTitle() + " " + WARNING
+                            + "Автор: " + RESET + book.getAuthor(), 3);
+                }
+            }
 
-            System.out.print("   Введите номер книги: ");
-            int id = scanner.nextInt();
-            scanner.nextLine();
-            service.deleteBook(id);
+            System.out.print("\n"+PRIMARY+"   Введите id книги: "+RESET);
+            if (scanner.hasNextInt()) {
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                if (id <= 0) {
+                    prnt("\n   Ошибка: указан неверный номер книги.", 4);
+                } else {
+
+                    // Получаем книгу по id из общего списка
+                    MyList<Book> allBooks = service.getAllBooks();
+                    Book selectedBook = null;
+                    for (Book book : allBooks) {
+                        if (book.getId() == id) {
+                            selectedBook = book;
+                            break;
+                        }
+                    }
+
+                    service.deleteBook(id);
+                    prnt("\n   Книга "+ selectedBook.getTitle() + " успешно удалена!", 2);
+                }
+            } else {
+                prnt("\n   Ошибка: введите корректное число.", 4);
+                scanner.nextLine(); // очистка
+            }
             waitRead();
 
         } else if (choice == 13 && role == Role.ADMIN) {
-            service.getTakenBooks();
+            prnt("\n   = Книги на руках ===", 1);
+            //System.out.println();
+            // Получаем список всех пользователей
+            MyList<User> users = service.getAllUsers();
+            boolean found = false;
+            for (User user : users) {
+                MyList<Book> userBooks = user.getUserBooks();
+                if (userBooks != null && !userBooks.isEmpty()) {
+                    found = true;
+                    for (Book book : userBooks) {
+                        prnt(WARNING + book.getId() + ". " + RESET
+                                + book.getTitle() + " " + WARNING
+                                + "Автор: " + RESET + book.getAuthor()
+                                + PRIMARY + "  - " + ACCENT + " у читателя: " + PRIMARY + user.getEmail() + RESET + " (xx дн.)", 3);
+                    }
+                }
+            }
+            if (!found) {
+                prnt("\n    Книг на руках пока нет.", 3);
+            }
             waitRead();
 
         } else if (choice == 14 && role == Role.ADMIN) {
@@ -231,7 +431,7 @@ public class Menu {
             prnt("\n   До свидания! Приходите еще!", 2);
             System.exit(0);
         } else {
-            prnt("\n  Некорректный ввод. Попробуйте снова.", 4);
+            prnt("\n   Некорректный ввод. Попробуйте снова.", 4);
             waitRead();
         }
     }
@@ -306,14 +506,14 @@ public class Menu {
                 waitRead();
             }
             else {
-                prnt("\n  Некорректный ввод. Попробуйте снова.", 4);
+                prnt("\n   Некорректный ввод. Попробуйте снова.", 4);
                 waitRead();
             }
         }
     }
 
     private void waitRead() {
-        System.out.println("\n    Для продолжения нажмите Enter...");
+        System.out.println("\n   Для продолжения нажмите Enter...");
         scanner.nextLine(); // Ждем нажатия Enter
     }
 
@@ -331,7 +531,7 @@ public class Menu {
             prnt("\n   [+] Добро пожаловать, "+ email + "!\n", 2);
             //waitRead();
         } else {
-            prnt("\n  [!] Ошибка авторизации! Неверный email или пароль.", 4);
+            prnt("\n   [!] Неверный email или пароль!", 4);
             waitRead();
         }
     }
@@ -357,7 +557,7 @@ public class Menu {
         if (user == null) {
             prnt("  [!] Операция отменена", 4);
         } else {
-            prnt("\n    [+] Операция прошла успешно", 2);
+            prnt("\n    [+] Пользователь зарегистрирован", 2);
         }
 
         waitRead();
@@ -372,7 +572,7 @@ public class Menu {
             if (service.getUserByEmail(email) == null) {
                 prnt("\n  Пользователь не найден.", 4);
             } else {
-                prnt("\n  Невозможно удалить пользователя, так как у него есть книги.", 4);
+                prnt("\n   Невозможно удалить пользователя, так как у него есть книги!", 4);
             }
         } else {
             prnt("\n   Удаление пользователя прошло успешно.", 2);
@@ -398,9 +598,9 @@ public class Menu {
 
         boolean result = service.updatePassword(email, newPassword);
         if (result) {
-            prnt("  Изменение данных пользователя прошло успешно.", 2);
+            prnt("\n  Изменение данных пользователя прошло успешно.", 2);
         } else {
-            prnt("  Не пройдена валидация! Изменение данных отменено.", 4);
+            prnt("\n  Не пройдена валидация! Изменение данных отменено.", 4);
         }
 
         waitRead();

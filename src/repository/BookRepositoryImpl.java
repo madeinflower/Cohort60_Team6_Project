@@ -22,21 +22,13 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
     private void addStartBooks() { // Метод для добавления стартового набора книг
         books.addAll(
 
-
-                new Book(currentId.getAndIncrement(), "1984", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1985", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1986", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1987", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1988", "Джордж Оруэлл"),
-                new Book(currentId.getAndIncrement(), "1989", "Джордж Оруэлл"),
-
                 new Book(currentId.getAndIncrement(), "Чистый код. Создание, анализ и рефакторинг", "Роберт Мартин"),
                 new Book(currentId.getAndIncrement(), "Совершенный программист. Путь к мастерству", "Эндрю Хант, Дэвид Томас"),
-                new Book(currentId.getAndIncrement(), "Паттерны проектирования. Решения для повторяющихся проблем", "Эрих Гамма, Ричард Хелм, Ральф Джонсон, Джон Влиссайдес"),
+                new Book(currentId.getAndIncrement(), "Паттерны проектирования. Решения для повторяющихся проблем", "Эрих Гамма, Ричард Хелм"),
+                new Book(currentId.getAndIncrement(), "Python. Краткий курс", "Эрик Мэттес"),
                 new Book(currentId.getAndIncrement(), "Вы не знаете JS", "Кайл Симпсон"),
                 new Book(currentId.getAndIncrement(), "Эффективный JavaScript", "Дэвид Херман"),
-                new Book(currentId.getAndIncrement(), "Fullstack React", "Энтони Аккомадзо, Натан Мюррей, Ар Лернер, Клэй Оллопп"),
+                new Book(currentId.getAndIncrement(), "Fullstack React", "Энтони Аккомадзо, Натан Мюррей"),
                 new Book(currentId.getAndIncrement(), "Node.js. Шаблоны проектирования", "Марио Каччаро"),
                 new Book(currentId.getAndIncrement(), "Изучаем React", "Алекс Бэнкс, Ив Порцелло"),
                 new Book(currentId.getAndIncrement(), "Python. Краткий курс", "Эрик Мэттес"),
@@ -52,15 +44,8 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
 
     // возвращает все книги
     @Override
-    public void getAllBooks() {
-        for (Book book : books) {
-            if (books.isEmpty()) {
-                prnt("Книг пока нет.", 3);
-            } else {
-                System.out.println("    " + book);
-            }
-        }
-
+    public MyList<Book> getAllBooks() {
+        return books;
     }
 
     // поиск по названию
@@ -110,15 +95,11 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
         return availableBooks;
     }
 
-    // возвращает книги, которые уже взяты.
     @Override
     public MyList<Book> getTakenBooks() {
         MyList<Book> takenBooks = new MyArrayList<>();
         for (Book book : books) {
-            if (takenBooks.isEmpty()) {
-                prnt("Книг пока нет.", 3);
-                break;
-            }else if (book.isTaken()) {
+            if (book.isTaken()) {
                 takenBooks.add(book);
             }
         }
@@ -159,4 +140,43 @@ public class BookRepositoryImpl implements BookRepository { // Класс-реп
             if (book.getId() == id) books.remove(book);
         }
     }
+
+    @Override
+    public MyList<Book> getSortedBooks(String sortField) {
+
+        MyList<Book> allBooks = getAllBooks(); // Получаем все книги
+        if (allBooks == null || allBooks.isEmpty()) {
+            return allBooks;
+        }
+
+        // Преобразуем список в массив
+        Book[] booksArray = allBooks.toArray();
+
+        // Простейшая сортировка выбором по выбранному полю
+        for (int i = 0; i < booksArray.length - 1; i++) {
+            for (int j = i + 1; j < booksArray.length; j++) {
+                String fieldI = "";
+                String fieldJ = "";
+                if ("author".equalsIgnoreCase(sortField)) {
+                    fieldI = booksArray[i].getAuthor().toLowerCase(); // сравниваем строки по автору
+                    fieldJ = booksArray[j].getAuthor().toLowerCase();  // сравниваем строки по автору
+                } else if ("title".equalsIgnoreCase(sortField)) {
+                    fieldI = booksArray[i].getTitle().toLowerCase();  // сравниваем строки по названию
+                    fieldJ = booksArray[j].getTitle().toLowerCase(); // сравниваем строки по названию
+                }
+                if (fieldI.compareTo(fieldJ) > 0) { // если больше нуля, значит fieldI идет лексикографически позже fieldJ
+                    Book temp = booksArray[i]; // сохраняем по временный объект
+                    booksArray[i] = booksArray[j];
+                    booksArray[j] = temp;
+                }
+            }
+        }
+        // Собираем отсортированный массив обратно в MyList<Book>
+        MyList<Book> sortedBooks = new MyArrayList<>();
+        for (Book book : booksArray) {
+            sortedBooks.add(book);
+        }
+        return sortedBooks;
+    }
+
 }

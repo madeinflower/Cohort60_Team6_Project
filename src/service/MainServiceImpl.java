@@ -25,17 +25,17 @@ public class MainServiceImpl implements MainService {
     public User registerUser(String email, String password) { // Регистрация пользователя
 
         if (!UserValidation.isEmailValid(email)) { // Проверка email
-            System.out.println("Емейл не прошел проверку!");
+            System.out.println("\n    Емейл не прошел проверку!");
             return null;
         }
 
         if (!UserValidation.isPasswordValid(password)) { // Проверка пароля
-            System.out.println("Пароль не прошел проверку!");
+            System.out.println("\n    Пароль не прошел проверку!");
             return null;
         }
 
         if (userRepository.isEmailExist(email)) { // Проверка уникальности email
-            System.out.println("Пользователь уже есть, так как email уже существует!");
+            System.out.println("\n    Пользователь уже есть, так как email уже существует!");
             return null;
         }
 
@@ -69,8 +69,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public void getAllBooks() {
-        bookRepository.getAllBooks();
+    public MyList<Book> getAllBooks() {
+        return bookRepository.getAllBooks();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public MyList<User> getAllUsers() {
-        return null;
+        return userRepository.getAllUsers();
     }
 
     @Override
@@ -134,8 +134,8 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public MyList<Book> searchByTitleOrAuthor(String titleSearch) {
-        return null;
+    public MyList<Book> searchByTitleOrAuthor(String query) {
+        return bookRepository.searchByTitleOrAuthor(query);
     }
 
     public User getUserByEmail(String email) { // получение пользователя по емейл
@@ -165,5 +165,8 @@ public class MainServiceImpl implements MainService {
         }
         return userRepository.updatePassword(email, newPassword); // обновление пароля
     }
-
+    @Override
+    public MyList<Book> getSortedBooks(String sortField) {
+        return bookRepository.getSortedBooks(sortField);
+    }
 }
