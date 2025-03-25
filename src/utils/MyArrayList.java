@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-
 public class MyArrayList<T> implements MyList<T> {
     private T[] array;
     private int cursor; // по умолчанию = 0
@@ -16,7 +15,6 @@ public class MyArrayList<T> implements MyList<T> {
     public MyArrayList() {
         // Стирание типов. Невозможно создать объект типа T
         this.array = (T[]) new Object[10];
-
     }
 
     @SuppressWarnings("unchecked")
@@ -34,22 +32,19 @@ public class MyArrayList<T> implements MyList<T> {
     @Override
     // Добавление в массив одного элемента
     public void add(T value) {
-
         // Проверка! Есть ли свободное место во внутреннем массиве
         // Если места нет - нужно добавить место
-
         if (cursor == array.length) {
             // Расширить внутренний массив перед добавлением нового значения
             expandArray();
         }
-
         array[cursor] = value;
         cursor++;
     }
 
     // Динамическое расширение массива
     private void expandArray() {
-        System.out.println("Расширяем внутренний массив! Курсор = " + cursor);
+        //System.out.println("Расширяем внутренний массив! Курсор = " + cursor);
         /*
         1. Создать новый массив бОльшего размера (в 2 раза больше)
         2. Переписать в новый массив все значения из старого (до курсора)
@@ -85,19 +80,16 @@ public class MyArrayList<T> implements MyList<T> {
         }
     }
 
-
     @Override
     // Возвращает строковое представление массива
     // [5, 20, 45]
     public String toString() {
-
         if (cursor == 0) return "[]";
 
         String result = "[";
         for (int i = 0; i < cursor; i++) {
             result += array[i] + (i < cursor - 1 ? ", " : "]");
         }
-
         return result;
     }
 
@@ -110,11 +102,11 @@ public class MyArrayList<T> implements MyList<T> {
     // Возвращает значение по индексу
     public T get(int index) {
         // Проконтролировать входящий индекс!
-
         if (index >= 0 && index < cursor) {
             return array[index];
         }
-
+        // Альтернативно можно выбрасывать исключение:
+        // throw new IndexOutOfBoundsException("Индекс " + index + " вне диапазона [0, " + (cursor - 1) + "]");
         return null;
     }
 
@@ -126,7 +118,6 @@ public class MyArrayList<T> implements MyList<T> {
         3. Передвинуть курсор (т.к. кол-во элементов уменьшилось)
         4. Вернуть старое значение
          */
-
         if (index >= 0 && index < cursor) {
             // Логика удаления
             T value = array[index]; // запомнить старое значение
@@ -135,13 +126,14 @@ public class MyArrayList<T> implements MyList<T> {
             for (int i = index; i < cursor - 1; i++) { // граница перебора индексов
                 array[i] = array[i + 1];
             }
-
             cursor--;
+            // Обнуляем ссылку на последний элемент, чтобы не оставалось лишней ссылки
+            array[cursor] = null;
 
             return value; // вернуть старое значение
-
         } else {
             // Индекс не валидный
+            // Альтернативно можно выбрасывать исключение
             return null;
         }
     }
@@ -172,9 +164,7 @@ public class MyArrayList<T> implements MyList<T> {
         // Перебираю все значимые элементы.
         // Если элемент равен искомому - вернуть индекс такого элемента
         // Если перебрал все элементы =- не нашел совпадений - вернуть -1
-
         for (int i = 0; i < cursor; i++) {
-
             // null-безопасное сравнение
             if (Objects.equals(array[i], value)) {
 //            if (array[i].equals(value)) {
@@ -182,7 +172,6 @@ public class MyArrayList<T> implements MyList<T> {
                 return i;
             }
         }
-
         // Сюда мы попадем, если ни одно значение в массиве не совпало
         return -1;
     }
@@ -190,14 +179,11 @@ public class MyArrayList<T> implements MyList<T> {
     // Индекс последнего вхождения.
     // {1, 100, 5, 100, 24, 0, 100} -> lastIndexOf(100) -> 6
     public int lastIndexOf(T value) {
-
         for (int i = cursor - 1; i >= 0; i--) {
             if (Objects.equals(array[i], value)) return i;
 //            if (array[i].equals(value)) return i;
         }
-
         return -1;
-
         /*
         int index = -1;
         for (int i = 0; i < cursor; i++) {
@@ -208,25 +194,22 @@ public class MyArrayList<T> implements MyList<T> {
         }
         return index;
          */
-
     }
 
     @Override
     // Удаление элемента по значению
     public boolean remove(T value) {
-               /*
+        /*
         1. Есть ли элемент с таким значением - indexOf
         2. Если элемента нет - ничего не пытаемся удалить - возвращаем false
         3. Если найден - удалить и затем вернуть true.
          */
         int index = indexOf(value);
         if (index < 0) return false;
-
         // В эту строку кода попадем, только при index = 0 или больше
         remove(index);
         return true;
     }
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -238,23 +221,17 @@ public class MyArrayList<T> implements MyList<T> {
         3. Вернуть ссылку на новый массив
          */
 
-//        // TODO здесь будет ошибка
-//        T[] result = (T[]) new Object[cursor];
-////        T[] res = new T[11];  нельзя создать объект
-////        T obj = new T();
+        // Если элементов нет, возвращаем пустой массив, а не null
+        if (cursor == 0) return (T[]) new Object[0];
 
         // Взять какой-то объект из моего массива
         // и узнать с помощью рефлексии тип этого объекта.
         // Потом я могу создать массив этого типа
-
-        if (cursor == 0) return null;
-
         Class<T> clazz = (Class<T>) array[0].getClass();
-        System.out.println("clazz: " + clazz);
+        //System.out.println("clazz: " + clazz);
 
         // Создаю массив того же типа, что и 0-й элемент.
         T[] result = (T[]) Array.newInstance(clazz, cursor);
-
         for (int i = 0; i < cursor; i++) {
             result[i] = array[i];
         }
@@ -270,7 +247,6 @@ public class MyArrayList<T> implements MyList<T> {
     }
 
     private class MyIterator implements Iterator<T> {
-
         int currentIndex = 0;
 
         @Override
@@ -287,25 +263,23 @@ public class MyArrayList<T> implements MyList<T> {
         }
     } // End class MyIterator
 
-
     public void test() {
         System.out.println(Arrays.toString(array));
     }
-
 }
 // [5, 20]
 
 /*
 1. Добавлять в массив элемент (не думаю об индексах, размере массива) ++
 2. Динамическое изменение размера внутреннего массива ++
-3. Возвратить строковое представление массива (все элементы массива в одной строке) (какие элементы есть)++
+3. Возвратить строковое представление массива (все элементы массива в одной строке) (какие элементы есть) ++
 4. Добавить в массив сразу несколько значений ++
 5. Текущее кол-во элементов в массиве ++
 6. Возвращает значение по индексу ++
 7. Удалить элемент по индексу (есть индекс - удалить элемент из массива). Возвращает старое значение ++
-8. Удаление элемента по значению. Возвращал boolean. Если удалил - вернет true. Не нашел что удалять - false
+8. Удаление элемента по значению. Возвращал boolean. Если удалил - вернет true. Не нашел что удалять - false ++
 9. Поиск по значению. Возвращать индекс первого вхождения элемента ++
 10. Индекс последнего вхождения.
 11. Конструктор, принимающий обычный массив. Создать магический массив с элементами из этого массива
 12. Написать метод, который вернет массив, состоящий из элементов магического массива
- */
+*/

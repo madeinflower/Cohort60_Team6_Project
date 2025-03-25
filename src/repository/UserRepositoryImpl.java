@@ -16,11 +16,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void addUsers() {
-        User admin = new User("111", "111");
-        //User admin = new User("admin@library.net", "qazxsw@12");
+        User admin = new User("admin@admin.com", "Password123!");
         admin.setRole(Role.ADMIN);
 
-        User user = new User("222", "222");
+        User user = new User("user@user.com", "Password123!");
         user.setRole(Role.USER);
 
         // Добавляем еще пользователей

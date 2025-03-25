@@ -7,7 +7,7 @@ public interface BookRepository {
 
     void addBook(String title, String author);
 
-    void getAllBooks();
+    MyList<Book> getAllBooks();
 
     MyList<Book> searchByTitle(String query);
     MyList<Book> searchByAuthor(String query);
@@ -15,6 +15,7 @@ public interface BookRepository {
     MyList<Book> searchByTitleOrAuthor(String query);
     MyList<Book> getAvailableBooks();
     MyList<Book> getTakenBooks();
+    MyList<Book> getSortedBooks(String sortField); // Отсортированный список
 
     void takeBook(int id);
     void returnBook(int id);

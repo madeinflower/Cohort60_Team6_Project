@@ -2,8 +2,6 @@ package service;
 
 import model.Book;
 import model.User;
-import repository.BookRepository;
-import repository.UserRepository;
 import utils.MyList;
 
 /*** Author: Roman Romashko Date: 17.03.2025 ***/
@@ -18,7 +16,7 @@ public interface MainService {
 
     void addBook(String title, String author); // Добавить новую книгу
 
-    void getAllBooks(); // Получить список всех книг
+    MyList<Book> getAllBooks(); // Получить список всех книг
 
     MyList<Book> getBooksByTitle(String title); // Найти книги по названию
 
@@ -52,5 +50,7 @@ public interface MainService {
     boolean deleteUser(String email);
 
     boolean updatePassword(String email, String newPassword); // обновление данных пользователя
+
+    MyList<Book> getSortedBooks(String sortField); // Отсортированный список
 
 }
